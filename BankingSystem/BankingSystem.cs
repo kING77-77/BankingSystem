@@ -10,8 +10,6 @@ namespace BankingSystem
         private static string dataFile = "accounts.json";
         private static List<Card> records = new List<Card>();
 
-        private static void Main()
-        {
 
             LoadAccounts();
 
@@ -40,7 +38,7 @@ namespace BankingSystem
                     break;
 
             }
-        }
+        
 
         private static void CreateAccount(List<Card> records)
         {
