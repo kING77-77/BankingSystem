@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Linq;
 
 namespace BankingSystem
 {
@@ -10,6 +9,38 @@ namespace BankingSystem
     {
         private static string dataFile = "accounts.json";
         private static List<Card> records = new List<Card>();
+
+        private static void ProgramStart()
+        {
+
+            LoadAccounts();
+
+            Console.WriteLine("Welcome to ATM");
+            Console.WriteLine("Options:");
+            Console.WriteLine("\t1. Create Account On Bank");
+            Console.WriteLine("\t2. Log In Your Existing Account");
+            Console.WriteLine("\t3. Shutdown System");
+            Console.Write("Select Operation> ");
+            string? input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    CreateAccount(records);
+                    break;
+                case "2":
+                    AccountController(records);
+                    break;
+                case "3":
+                    Console.WriteLine("System shutdown. All data saved.");
+                    SaveAccounts();
+                    break;
+                default:
+                    Console.WriteLine("Unknown option.");
+                    break;
+
+            }
+        }
 
         private static void CreateAccount(List<Card> records)
         {
@@ -22,17 +53,20 @@ namespace BankingSystem
             records.Add(new Card() { AccountId = cardId, User = user!, Balance = 0.0m, Pin = pin });
             SaveAccounts();
 
+
             Console.WriteLine("Account Created. Details:");
             Console.WriteLine($"\tAccountId: {cardId}");
             Console.WriteLine("Press enter to continue...");
             Console.WriteLine($"Your Pin is: {pin}");
             Console.ReadLine();
             Console.Clear();
+            ProgramStart();
         }
 
         private static void AccountController(List<Card> records)
         {
             Console.Write("Enter Bank AccountId: ");
+
             string? input = Console.ReadLine();
             Console.Write("Enter your Pin: ");
             string? pintup = Console.ReadLine() ?? string.Empty;
@@ -45,14 +79,16 @@ namespace BankingSystem
                 Console.WriteLine("Press Enter to go back...");
                 Console.ReadLine();
                 Console.Clear();
+                ProgramStart();
                 return;
             }
-            if(pin == null)
+            if (pin == null)
             {
                 Console.WriteLine("Pin is incorrect");
                 Console.WriteLine("Press Enter to go back...");
                 Console.ReadLine();
                 Console.Clear();
+                ProgramStart();
                 return;
             }
 
@@ -117,6 +153,7 @@ namespace BankingSystem
                     case "4":
                         atmClose = true;
                         Console.Clear();
+                        ProgramStart();
                         break;
 
                     default:
@@ -125,6 +162,7 @@ namespace BankingSystem
                 }
             }
         }
+
 
         private static void SaveAccounts()
         {
@@ -165,6 +203,3 @@ namespace BankingSystem
         }
     }
 }
-
-
-
